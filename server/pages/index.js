@@ -173,6 +173,7 @@ function getDefaultContext( request ) {
 		config.isEnabled( 'try/single-cdn' ) && !! request.query.enableSingleCDN;
 
 	const context = Object.assign( {}, request.context, {
+		commitSha: process.env.hasOwnProperty( 'COMMIT_SHA' ) ? process.env.COMMIT_SHA : '(unknown)',
 		compileDebug: process.env.NODE_ENV === 'development',
 		urls: generateStaticUrls(),
 		user: false,
@@ -507,7 +508,9 @@ module.exports = function() {
 			} );
 
 			if ( section.isomorphic ) {
-				section.load()( serverRouter( app, setUpRoute, section ) );
+				// section.load() uses require on the server side so we also need to access the
+				// default export of it. See webpack/bundler/sections-loader.js
+				section.load().default( serverRouter( app, setUpRoute, section ) );
 			}
 		} );
 

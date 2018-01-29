@@ -7,6 +7,7 @@
 import thunkMiddleware from 'redux-thunk';
 import { createStore, applyMiddleware, compose } from 'redux';
 import { reducer as form } from 'redux-form';
+import { mapValues } from 'lodash';
 
 /**
  * Internal dependencies
@@ -36,6 +37,7 @@ import domains from './domains/reducer';
 import geo from './geo/reducer';
 import googleAppsUsers from './google-apps-users/reducer';
 import help from './help/reducer';
+import i18n from './i18n/reducer';
 import invites from './invites/reducer';
 import jetpackConnect from './jetpack-connect/reducer';
 import jetpackOnboarding from './jetpack-onboarding/reducer';
@@ -90,7 +92,12 @@ import config from 'config';
  */
 
 // Consolidate the extension reducers under 'extensions' for namespacing.
-const extensions = combineReducers( extensionsModule.reducers() );
+const extensions = combineReducers(
+	mapValues(
+		extensionsModule.reducers(),
+		reducer => ( reducer.default ? reducer.default : reducer )
+	)
+);
 
 const reducers = {
 	analyticsTracking,
@@ -116,6 +123,7 @@ const reducers = {
 	happinessEngineers,
 	happychat,
 	help,
+	i18n,
 	invites,
 	jetpackConnect,
 	jetpackOnboarding,
