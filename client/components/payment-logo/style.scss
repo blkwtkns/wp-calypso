@@ -7,7 +7,7 @@
 	vertical-align: middle;
 	width: 35px;
 
-	$payment-types: 'alipay', 'amex', 'bancontact', 'diners', 'discover', 'giropay', 'ideal', 'jcb', 'mastercard', 'paypal', 'p24', 'unionpay', 'visa' ;
+	$payment-types: 'alipay', 'amex', 'bancontact', 'diners', 'discover', 'giropay', 'ideal', 'jcb', 'mastercard', 'paypal', 'p24', 'sepa-debit', 'unionpay', 'visa' ;
 
 	@each $type in $payment-types {
 		&.is-#{$type} {

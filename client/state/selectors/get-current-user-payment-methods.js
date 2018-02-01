@@ -26,9 +26,9 @@ const paymentMethods = {
 
 	byCountry: {
 		US: DEFAULT_PAYMENT_METHODS,
-		NL: [ 'credit-card', 'ideal', 'paypal' ],
-		DE: [ 'credit-card', 'giropay', 'paypal' ],
-		BE: [ 'credit-card', 'bancontact', 'paypal' ],
+		NL: [ 'credit-card', 'sepa-debit', 'ideal', 'paypal' ],
+		DE: [ 'credit-card', 'sepa-debit', 'giropay', 'paypal' ],
+		BE: [ 'credit-card', 'sepa-debit', 'bancontact', 'paypal' ],
 		PL: [ 'credit-card', 'p24', 'paypal' ],
 		CN: [ 'credit-card', 'alipay', 'paypal' ],
 	},
