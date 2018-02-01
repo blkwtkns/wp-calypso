@@ -307,6 +307,7 @@ const SecurePaymentForm = createReactClass( {
 			case 'bancontact':
 			case 'p24':
 			case 'alipay':
+			case 'sepa-debit':
 				return (
 					<div>
 						{ this.renderGreatChoiceHeader() }
