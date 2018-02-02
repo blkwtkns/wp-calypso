@@ -37,6 +37,7 @@ import versionCompare from 'lib/version-compare';
 import { getCustomizerFocus } from 'my-sites/customize/panels';
 import { getSiteComputedAttributes } from './utils';
 import { isSiteUpgradeable, getSiteOptions, getSitesItems } from 'state/selectors';
+import treeSelect from 'lib/tree-select';
 
 /**
  * Returns a raw site object by its ID.
@@ -150,9 +151,10 @@ export const getSiteCollisions = createSelector(
  * @param  {Number}  siteId Site ID
  * @return {Boolean}        Whether collision exists
  */
-export function isSiteConflicting( state, siteId ) {
-	return includes( getSiteCollisions( state ), siteId );
-}
+export const isSiteConflicting = treeSelect(
+	( state, siteId ) => [ getSiteCollisions( state, siteId ) ],
+	( [ siteCollisions ], siteId ) => includes( siteCollisions, siteId )
+);
 
 /**
  * Returns true if site has only a single user, false if the site not a single
