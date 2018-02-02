@@ -74,29 +74,27 @@ class PeopleListItem extends React.PureComponent {
 		this.props.resendInvite( siteId, inviteKey );
 	};
 
-	renderInviteStatus = () => {
+	renderInviteActions = () => {
 		const { invite, translate, requestingResend, resendSuccess } = this.props;
 		const { isPending } = invite;
-		const className = classNames( 'people-list-item__invite-status', {
-			'is-pending': isPending,
-		} );
+
+		if ( ! isPending ) {
+			return null;
+		}
+
 		const buttonClassName = classNames( 'people-list-item__invite-resend', {
 			'is-success': resendSuccess,
 		} );
 
 		return (
-			<div className={ className }>
-				{ isPending && (
-					<Button
-						className={ buttonClassName }
-						onClick={ this.onResend }
-						busy={ requestingResend }
-						compact
-					>
-						{ resendSuccess ? translate( 'Invite Sent!' ) : translate( 'Resend Invite' ) }
-					</Button>
-				) }
-			</div>
+			<Button
+				className={ buttonClassName }
+				onClick={ this.onResend }
+				busy={ requestingResend }
+				compact
+			>
+				{ resendSuccess ? translate( 'Invite Sent!' ) : translate( 'Resend Invite' ) }
+			</Button>
 		);
 	};
 
@@ -117,7 +115,7 @@ class PeopleListItem extends React.PureComponent {
 					<PeopleProfile invite={ invite } type={ type } user={ user } />
 				</div>
 
-				{ isInvite && this.renderInviteStatus() }
+				{ isInvite && this.renderInviteActions() }
 
 				{ onRemove && (
 					<div className="people-list-item__actions">
