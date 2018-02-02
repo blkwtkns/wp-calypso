@@ -235,7 +235,7 @@ export function isJetpackMinimumVersion( state, siteId, version ) {
  * @param  {Number}  siteId Site ID
  * @return {?String}        Site slug
  */
-export function getSiteSlug( state, siteId ) {
+export const getSiteSlug = createSelector( ( state, siteId ) => {
 	const site = getRawSite( state, siteId );
 	if ( ! site ) {
 		return null;
@@ -246,7 +246,7 @@ export function getSiteSlug( state, siteId ) {
 	}
 
 	return urlToSlug( site.URL );
-}
+}, getSitesItems );
 
 /**
  * Returns the domain for a site, or null if the site is unknown.
