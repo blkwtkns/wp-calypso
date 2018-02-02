@@ -20,6 +20,7 @@ import Card from 'components/card';
 import PeopleListItem from 'my-sites/people/people-list-item';
 import Gravatar from 'components/gravatar';
 import QuerySiteInvites from 'components/data/query-site-invites';
+import Button from 'components/button';
 import { getSelectedInvite } from 'state/invites/selectors';
 
 class PeopleInviteDetails extends React.PureComponent {
@@ -36,21 +37,46 @@ class PeopleInviteDetails extends React.PureComponent {
 		page.back( fallback );
 	};
 
+	renderClearOrRevoke = () => {
+		const { invite, translate } = this.props;
+		const { isPending } = invite;
+		const revokeMessage = translate(
+			'Revoking an invite will no longer allow this person to join your site. ' +
+				'You can always invite them again if your change your mind.'
+		);
+		const clearMessage = translate(
+			'If you no longer wish to see this record, you can clear it. ' +
+				'The person will still remain a member of this site.'
+		);
+
+		return (
+			<div className="people-invite-details__clear-revoke">
+				<div>{ isPending ? revokeMessage : clearMessage }</div>
+				<Button primary={ isPending } scary={ isPending }>
+					{ isPending ? translate( 'Revoke Invite' ) : translate( 'Clear Invite' ) }
+				</Button>
+			</div>
+		);
+	};
+
 	renderInvite = () => {
 		const { site, invite } = this.props;
 
 		return (
-			<Card>
-				<PeopleListItem
-					key={ invite.key }
-					invite={ invite }
-					user={ invite.user }
-					site={ site }
-					type="invite-details"
-					isSelectable={ false }
-				/>
-				{ this.renderInviteDetails() }
-			</Card>
+			<div>
+				<Card>
+					<PeopleListItem
+						key={ invite.key }
+						invite={ invite }
+						user={ invite.user }
+						site={ site }
+						type="invite-details"
+						isSelectable={ false }
+					/>
+					{ this.renderInviteDetails() }
+				</Card>
+				{ this.renderClearOrRevoke() }
+			</div>
 		);
 	};
 
