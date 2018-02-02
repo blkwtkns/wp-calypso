@@ -21,7 +21,7 @@ import PeopleListItem from 'my-sites/people/people-list-item';
 import Gravatar from 'components/gravatar';
 import QuerySiteInvites from 'components/data/query-site-invites';
 import Button from 'components/button';
-import { getSelectedInvite } from 'state/invites/selectors';
+import { getSelectedInvite, isDeleting } from 'state/invites/selectors';
 import { deleteInvite } from 'state/invites/actions';
 
 class PeopleInviteDetails extends React.PureComponent {
@@ -39,12 +39,15 @@ class PeopleInviteDetails extends React.PureComponent {
 	};
 
 	handleDelete = () => {
-		const { deleteInvite: _deleteInvite, invite, site } = this.props;
+		const { deleteInvite: _deleteInvite, deleting, invite, site } = this.props;
+		if ( deleting ) {
+			return;
+		}
 		_deleteInvite( site.ID, invite.key );
 	};
 
 	renderClearOrRevoke = () => {
-		const { invite, translate } = this.props;
+		const { deleting, invite, translate } = this.props;
 		const { isPending } = invite;
 		const revokeMessage = translate(
 			'Revoking an invite will no longer allow this person to join your site. ' +
@@ -58,7 +61,12 @@ class PeopleInviteDetails extends React.PureComponent {
 		return (
 			<div className="people-invite-details__clear-revoke">
 				<div>{ isPending ? revokeMessage : clearMessage }</div>
-				<Button primary={ isPending } scary={ isPending } onClick={ this.handleDelete }>
+				<Button
+					busy={ deleting }
+					primary={ isPending }
+					scary={ isPending }
+					onClick={ this.handleDelete }
+				>
 					{ isPending ? translate( 'Revoke Invite' ) : translate( 'Clear Invite' ) }
 				</Button>
 			</div>
@@ -151,6 +159,7 @@ export default connect(
 		const siteId = ownProps.site && ownProps.site.ID;
 
 		return {
+			deleting: isDeleting( state, siteId, ownProps.inviteKey ),
 			invite: getSelectedInvite( state, siteId, ownProps.inviteKey ),
 		};
 	},
